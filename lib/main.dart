@@ -4,12 +4,21 @@ import 'package:weather_app/services/openweathermap_api.dart';
 import 'package:weather_app/ui/search_page.dart';
 
 import 'config.dart';
+import 'services/geolocation_service.dart';
 
 void main() {
   runApp(
-    Provider(
-        create: (_) => OpenWeatherMapApi(apiKey: openWeatherMapApiKey),
-        child: const WeatherApp()),
+    MultiProvider(
+      providers: [
+        Provider(
+          create: (_) => OpenWeatherMapApi(apiKey: openWeatherMapApiKey),
+        ),
+        Provider(
+          create: (_) => GeolocationService(),
+        ),
+      ],
+      child: const WeatherApp(),
+    ),
   );
 }
 
