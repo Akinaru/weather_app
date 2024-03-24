@@ -28,6 +28,7 @@ class _WeatherPageState extends State<WeatherPage> {
 
 return Scaffold(
 appBar: AppBar(
+  centerTitle: true,
   title: Text('Météo à ${widget.locationName}'),
   actions: [
     IconButton(
@@ -62,40 +63,81 @@ appBar: AppBar(
         return Text('Aucun résultat pour cette recherche.');
       }
       Weather weather = snapshot.data!;
-      return Center(
+return Column(
+  children: [
+    // Première partie avec la carte de température actuelle
+    Expanded(
+      child: Padding(
+        padding: const EdgeInsets.all(40), // Ajouter du padding pour centrer la carte verticalement
         child: Container(
-          decoration: BoxDecoration(color: Colors.blueGrey, borderRadius: BorderRadius.circular(10)),
-          child: Row(
+          decoration: BoxDecoration(
+            color: Color.fromARGB(255, 78, 80, 82), // Couleur de fond de la carte
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.network(
-                openWeatherMapApi.getIconUrl(weather.icon),
-                width: 200,
-                height: 200,
-              ),
-              const SizedBox(height: 20),
-              Column(
+
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [            
-              Text(
-                weather.description,
-                style: const TextStyle(fontSize: 30),
+                children: [              
+                  Image.network(
+                    openWeatherMapApi.getIconUrl(weather.icon),
+                    width: 200,
+                    height: 200,
+                  ),
+              
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [            
+                      Text(
+                        weather.description,
+                        style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                      Text(
+                        '${weather.temperature}°C',
+                        style: TextStyle(fontSize: 24),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        '${weather.wind} km/h',
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  )
+                ],
               ),
-              Text(
-                '${weather.temperature}°C',
-                style: const TextStyle(fontSize: 24),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                '${weather.wind} km/h',
-                style: const TextStyle(fontSize: 20),
-              ),],
-              )
-          
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                Text('${weather.tempmin}°C', style: TextStyle(fontSize: 18, color: Colors.blue, fontWeight: FontWeight.bold)),
+                const SizedBox(width: 10),
+                const Text('|', style: TextStyle(fontSize: 18)),
+                const SizedBox(width: 10),
+                Text('${weather.tempmax}°C', style: TextStyle(fontSize: 18, color: Colors.red, fontWeight: FontWeight.bold))
+              ],),
             ],
           ),
+          
         ),
-      );
+      ),
+    ),
+    // Seconde partie (pour l'instant vide)
+    Expanded(
+      child: Container(
+        color: Colors.grey, // Couleur de fond de la deuxième partie (à remplacer)
+        // Ajoutez les widgets pour la deuxième partie ici
+      ),
+    ),
+  ],
+);
+
+
+
     },
   ),
 );
