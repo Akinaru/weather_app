@@ -25,7 +25,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
         Provider.of<GeolocationService>(context, listen: false);
     try {
       final Position? position = await geolocationService.getCurrentPosition();
-      if (position != null) {
+      if (position != null && mounted) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -34,10 +34,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
                   latitude: position.latitude,
                   longitude: position.longitude)),
         );
-      } else {
+      } else if(mounted){
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => SearchPage()),
+          MaterialPageRoute(builder: (context) => const SearchPage()),
         );
       }
     } catch (e) {
@@ -48,7 +48,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: CircularProgressIndicator(),
       ),
