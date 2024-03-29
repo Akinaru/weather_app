@@ -54,4 +54,26 @@ class OpenWeatherMapApi {
     throw Exception(
         'Impossible de récupérer les données météo (HTTP ${response.statusCode})');
   }
+
+  Future<Iterable<Weather>> getWeatherMultipleDays(
+      double lat, double lon) async {
+    final response = await http.get(
+      Uri.parse(
+        '$baseUrl/data/2.5/forecast?lat=$lat&lon=$lon&appid=$apiKey&lang=$lang&units=$units',
+      ),
+    );
+
+    if (response.statusCode == HttpStatus.ok) {
+      final dynamic jsonData = json.decode(response.body);
+      if (jsonData is Map<String, dynamic> && jsonData.containsKey("list")) {
+        final List<dynamic> forecastList = jsonData["list"];
+        return forecastList.map((json) => Weather.fromJson(json)).toList();
+      } else {
+        throw Exception('Format de données JSON invalide');
+      }
+    }
+
+    throw Exception(
+        'Impossible de récupérer les données météo sur plusieurs jours (HTTP ${response.statusCode})');
+  }
 }

@@ -7,6 +7,7 @@ class Weather {
     required this.wind,
     required this.tempmax,
     required this.tempmin,
+    required this.date,
   });
 
   final String condition;
@@ -16,6 +17,7 @@ class Weather {
   final double wind;
   final double tempmax;
   final double tempmin;
+  final DateTime date;
 
   factory Weather.fromJson(Map<String, dynamic> json) {
     return Weather(
@@ -26,6 +28,7 @@ class Weather {
       wind: (json['wind']['speed'] as num).toDouble(),
       tempmax: (json['main']['temp_max'] as num).toDouble(),
       tempmin: (json['main']['temp_min'] as num).toDouble(),
+      date: DateTime.fromMillisecondsSinceEpoch((json['dt'] as int) * 1000),
     );
   }
 }

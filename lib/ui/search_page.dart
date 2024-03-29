@@ -8,6 +8,7 @@ import 'weather_page.dart';
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
   @override
+  // ignore: library_private_types_in_public_api
   _SearchPageState createState() => _SearchPageState();
 }
 
@@ -17,7 +18,6 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     final openWeatherMapApi = context.read<OpenWeatherMapApi>();
-    Future<Iterable<Location>>? locationsSearchResults;
 
     return Scaffold(
       appBar: AppBar(
@@ -35,12 +35,9 @@ class _SearchPageState extends State<SearchPage> {
           ),
           ElevatedButton(
             onPressed: () {
-              setState(() {
-                locationsSearchResults =
-                    openWeatherMapApi.searchLocations(query);
-              });
+              setState(() {});
             },
-            child: Text('Rechercher'),
+            child: const Text('Rechercher'),
           ),
           if (query.isEmpty)
             const Text('Saisissez une ville dans la barre de recherche.')
@@ -49,7 +46,7 @@ class _SearchPageState extends State<SearchPage> {
               future: openWeatherMapApi.searchLocations(query),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
 
                 if (snapshot.hasError) {
@@ -57,7 +54,7 @@ class _SearchPageState extends State<SearchPage> {
                 }
 
                 if (!snapshot.hasData) {
-                  return Text('Aucun résultat pour cette recherche.');
+                  return const Text('Aucun résultat pour cette recherche.');
                 }
 
                 Iterable<Location> locations = snapshot.data!;
@@ -79,14 +76,6 @@ class _SearchPageState extends State<SearchPage> {
                     },
                   );
                 }).toList();
-
-                // return Column(
-                //   children: [
-                //     for (var location in snapshot.data!){
-                //       ListTile(onTap)
-                //     }
-                //   ]
-                // )
 
                 return Expanded(
                   child: ListView(
