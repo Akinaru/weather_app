@@ -55,8 +55,6 @@ class _WeatherPageState extends State<WeatherPage> {
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
         children: [
           FutureBuilder(
             future:
