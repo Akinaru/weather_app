@@ -1,6 +1,7 @@
 import 'package:geolocator/geolocator.dart';
 
 class GeolocationService {
+  /// Donne le statut du service de localisation.
   Future<GeolocationStatus> checkStatus() async {
     final enabled = await Geolocator.isLocationServiceEnabled();
 
@@ -25,6 +26,7 @@ class GeolocationService {
     return GeolocationStatus.available;
   }
 
+  /// Donne la position actuelle de l'appareil.
   Future<Position?> getCurrentPosition() async {
     final status = await checkStatus();
 
@@ -32,16 +34,29 @@ class GeolocationService {
       return null;
     }
 
-    var position = await Geolocator.getLastKnownPosition();
+    Position? position;
+
+    try {
+      position = await Geolocator.getLastKnownPosition();
+    } catch (_) {
+      // Impossible de récupérer la dernière position connue, on ignore l'erreur.
+    }
 
     if (position != null) {
       return position;
     }
 
-    return await Geolocator.getCurrentPosition();
+    try {
+      position = await Geolocator.getCurrentPosition();
+    } catch (_) {
+      // Impossible de récupérer la position actuelle, on ignore l'erreur.
+    }
+
+    return position;
   }
 }
 
+/// Représente les statuts du service de localisation.
 enum GeolocationStatus {
   available,
   disabled,

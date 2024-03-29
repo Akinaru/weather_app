@@ -24,8 +24,8 @@ class Weather {
       icon: json['weather'][0]['icon'] as String,
       temperature: (json['main']['temp'] as num).toDouble(),
       wind: (json['wind']['speed'] as num).toDouble(),
-      tempmax: (json['main']['temp_min'] as num).toDouble(),
-      tempmin: (json['main']['temp_max'] as num).toDouble(),
+      tempmax: (json['main']['temp_max'] as num).toDouble(),
+      tempmin: (json['main']['temp_min'] as num).toDouble(),
     );
   }
 }
